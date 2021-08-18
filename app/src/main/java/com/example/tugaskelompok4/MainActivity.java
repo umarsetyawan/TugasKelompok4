@@ -13,12 +13,18 @@ import com.androidnetworking.interfaces.JSONArrayRequestListener;
 import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     Adapter adapter;
+    List<User> userlist = new ArrayList<>();
 
 
     @Override
@@ -27,8 +33,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = findViewById(R.id.rvdata);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new Adapter(this, User);
 
         getData();
     }
@@ -41,7 +45,22 @@ public class MainActivity extends AppCompatActivity {
                 .getAsJSONObject(new JSONObjectRequestListener() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        response.get("")
+
+                        try {
+
+                            JSONArray list = response.getJSONArray("data");
+                            for (int i = 0; i < list.length(); i++) {
+                                JSONObject object = list.getJSONObject(i);
+                                User user = new User(object.getString("email"), object.getString("first_name"), object.getString("last_name"), object.getString("avatar"));
+
+                                userlist.add(user);
+                                adapter = new Adapter(userlist);
+                                recyclerView.setAdapter(adapter);
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
                     }
 
                     @Override
@@ -49,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
                     }
                 });
-
     }
 
 }
