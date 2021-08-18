@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -38,12 +39,14 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
     class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView email, name;
+        private final ImageView avatar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             email = itemView.findViewById(R.id.email);
             name = itemView.findViewById(R.id.name);
+            avatar = itemView.findViewById(R.id.avatar);
         }
     }
 }
